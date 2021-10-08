@@ -49,3 +49,6 @@ testListWithEnv [
 ```
 
 IMPORTANT: If a property test has more than one parameter, they must be bundled into a tuple. It looks about the same and behaves the same as one would expect. However, it is necessary to circumvent unknown arity issues (unknown number of arguments).
+
+## Design reasoning
+Key realizations that made this library possible are [described on my blog](https://spencerfarley.com/2021/10/08/testapi-in-fsharp-revised/)
