@@ -1,4 +1,4 @@
-﻿namespace Expecto
+namespace Expecto
 
 module TestApi = 
     type ITestEnv<'api, 'env>  = 
@@ -16,20 +16,20 @@ module TestApi =
     
     
     
-    let withEnv (testEnv:ITestEnv<'api, 'env>) f = 
+    let withEnv (testEnv:ITestEnv<'api, 'env>) (f: 'api -> 'a) = 
         let (api, env) = testEnv.Setup ()
         let result = f api
         testEnv.Cleanup env
         result
     
-    let withEnvAndArgs (testEnv:ITestEnv<'api, 'env>) f argTuple= 
+    let withEnvAndArgs (testEnv:ITestEnv<'api, 'env>) (f: 'api -> 'argtuple -> 'a) (argTuple: 'argtuple) = 
         withEnv testEnv (fun api -> f api argTuple)
     
-    let testWithEnv name test testEnv = 
+    let testWithEnv name (test: 'api -> unit) (testEnv: ITestEnv<'api,'env>) = 
         testCase name (fun () -> withEnv testEnv test)
         
         
-    let testPropertyWithEnv name (ftest: 'api -> 'argtuple -> 'a) testEnv =
+    let testPropertyWithEnv name (ftest: 'api -> 'argtuple -> 'a) (testEnv: ITestEnv<'api,'env>) =
         //Mostly intuitive property test with centralized environment application
         // Takes advantage of the fact that
         // 1. destructured tuples look almost identical to additional function parameters,
@@ -55,4 +55,3 @@ module TestApi =
     let etestProperty = testPropertyWithEnv
     let etestPropertyWithConfig = testPropertyWithConfigWithEnv
     
-
